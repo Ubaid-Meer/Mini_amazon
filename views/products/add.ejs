@@ -1,0 +1,21 @@
+<%- include("../layouts/header") %>
+<h2>Add New Product</h2>
+<form action="/products/add" method="POST">
+  <label>Name:</label>
+  <input type="text" name="name" required><br>
+
+  <label>Price:</label>
+  <input type="number" name="price" required><br>
+
+  <label>Description:</label>
+  <textarea name="description"></textarea><br>
+
+  <label>Category:</label>
+  <input type="text" name="category" required><br>
+
+  <label>Stock:</label>
+  <input type="number" name="stock" value="0"><br>
+
+  <button type="submit">Add Product</button>
+</form>
+<%- include("../layouts/footer") %>
