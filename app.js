@@ -21,11 +21,11 @@ app.set('views',path.join(__dirname,'views'));
 
 // use Routes
 
-app.get('/',(req,res)=>{
-    res.render('home')
-});
+// app.get('/',(req,res)=>{
+//     res.render('home')
+// });
 
-app.use('/product',productRoute)
+app.use('/products',productRoute)
 
 
 app.listen(PORT,()=>console.log(`Server is started on http://localhost:${PORT}`))
