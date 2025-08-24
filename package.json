@@ -13,10 +13,7 @@
     "bcryptjs": "^3.0.2",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
-<<<<<<< HEAD
     "express-session": "^1.18.2",
-=======
->>>>>>> 98742296f95303350a10bb0ab03fc2f4fbf8fde4
     "mongoose": "^8.18.0",
     "nodemon": "^3.1.10"
   }
