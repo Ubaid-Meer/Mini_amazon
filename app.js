@@ -27,9 +27,15 @@ app.set('views',path.join(__dirname,'views'));
 
 // use Routes
 
+<<<<<<< HEAD
 app.get('/',(req,res)=>{
     res.render('/products/all')
 });
+=======
+// app.get('/',(req,res)=>{
+//     res.render('home')
+// });
+>>>>>>> 98742296f95303350a10bb0ab03fc2f4fbf8fde4
 
 app.use('/products',productRoute)
 
