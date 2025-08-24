@@ -4,10 +4,10 @@ const Product=require('../models/product')
 
 //Show all Product
 
-router.get('/product',async(req,res)=>{
+router.get('/',async(req,res)=>{
     try{
-        const product =await Product.find();
-        res.render('products/list',{title:"All Product",product})
+        const products =await Product.find();
+        res.render('products/list',{title:"All Product",products})
     }
     catch(err){
         console.error(err)
@@ -15,26 +15,42 @@ router.get('/product',async(req,res)=>{
     }
 })
 
-router.get('/add',(req,res)=>{
-    res.render('product/add',{title:"Add Product"})
+router.get("/add", (req, res) => {
+  res.render("products/add", { title: "Add Product" });  // ✅ corrected path
 });
-router.post("/add",async(req,res)=>{
-    try{
-        const{name,price,descripion,category,stock}=req.body;
-        await Product.create({
-            name,
-            price,
-            descripion,
-            category,
-            stock,
-            image:"default.jpg"
-        });
-        res.redirect('/products')   
-    }catch(err){
-        console.error(err)
-        res.status(500).send("Failed to add Product",err.message)
-    }
-})
+
+// Handle Add Product
+router.post("/add", async (req, res) => {
+  try {
+    const { name, price, description, category, stock } = req.body; // ✅ fixed typo
+    await Product.create({
+      name,
+      price,
+      description,
+      category,
+      stock,
+      image: "default.jpg"
+    });
+    res.redirect("/products");  // ✅ corrected redirect
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Failed to add Product: " + err.message);
+  }
+});
+
+//Show all Product
+
+// router.get('/all',async(req,res)=>{
+//     try{
+//         const products =await Product.find();
+//         res.render('products/list',{title:"All Product",products})
+//     }
+//     catch(err){
+//         console.error(err)
+//         res.status(500).send('Server Error ')
+//     }
+// })
+
 
 module.exports=router;
 
