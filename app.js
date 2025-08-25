@@ -18,11 +18,17 @@ connectDB();
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(express.static('publics'))
+// session setup
 app.use(session({
     secret:'mini-amazon-secret',
     resave:false,
     saveUninitialized:false
 }))
+app.use((req,res,next)=>{
+    res.locals.session=req.session;
+    next();
+    
+})
 //Ejs Setup 
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'));
@@ -36,6 +42,9 @@ app.get('/',(req,res)=>{
 
 app.use('/products',productRoute)
 app.use('/auth',authRoute)
+
+
+
 
 
 app.listen(PORT,()=>console.log(`Server is started on http://localhost:${PORT}`))

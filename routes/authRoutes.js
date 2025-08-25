@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/User'); // make sure User model exists
+const isauth=require('../middleware/isauth')
 
 // Register POST
 router.get('/register',(req,res)=>{
@@ -56,6 +57,7 @@ router.post('/login',async(req,res)=>{
             const isMatch=await bcrypt.compare(password, user.password)
             if(!isMatch) return res.send('Invalid  email and Passord')
                 req.session.user=user;
+            console.log("user Session ",req.session)
             
             res.redirect('/products/all');
         }
@@ -64,6 +66,18 @@ router.post('/login',async(req,res)=>{
             res.status(500).send("server error")
         }
 
+});
+
+router.get('/logout',isauth,(req,res)=>{
+    req.session.destroy(err=>{
+        if(err){
+            console.error(err)
+            return res.status(500).end("Server Error to logout")
+        }
+        // clear Cookie and delete user session data
+        res.clearCookie('connect.sid')
+        res.redirect('/products/all')
+    })
 })
 module.exports=router
 
