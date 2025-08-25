@@ -1,6 +1,8 @@
 const express=require('express')
 const router=express.Router()
 const Product=require('../models/product')
+const isauth=require('../middleware/isauth');
+
 
 //Show all Product
 
@@ -15,12 +17,12 @@ router.get('/all',async(req,res)=>{
     }
 })
 
-router.get("/add", (req, res) => {
+router.get("/add", isauth,(req, res) => {
   res.render("products/add", { title: "Add Product" });  // ✅ corrected path
 });
 
 // Handle Add Product
-router.post("/add", async (req, res) => {
+router.post("/add", isauth,async (req, res) => {
   try {
     const { name, price, description, category, stock } = req.body; // ✅ fixed typo
     await Product.create({
