@@ -52,12 +52,17 @@ router.post('/login',async(req,res)=>{
         
         const user=await User.findOne({email})
         
-        if(!user) return res.send('Invalid User ,Please Check you Email and password')
+        if(!user){
+            //  return res.send('Invalid User ,Please Check you Email and password')
+            // req.flash('error_msg','Invalid Email and Password')
+        }
             
             const isMatch=await bcrypt.compare(password, user.password)
             if(!isMatch) return res.send('Invalid  email and Passord')
+                //  req.flash('error_msg','Invalid Email and Password')
+
                 req.session.user=user;
-            console.log("user Session ",req.session)
+            // console.log("user Session ",req.session)
             
             res.redirect('/products/all');
         }
@@ -76,6 +81,7 @@ router.get('/logout',isauth,(req,res)=>{
         }
         // clear Cookie and delete user session data
         res.clearCookie('connect.sid')
+        // res.flash('success_msg','Successfully log out! ')
         res.redirect('/products/all')
     })
 })

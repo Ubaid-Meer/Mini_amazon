@@ -3,6 +3,9 @@ const path=require('path')
 const PORT=8000;
 const app=express()
 const session=require('express-session')
+const flash=require('connect-flash')
+
+
 
 
 // import file and module
@@ -29,6 +32,14 @@ app.use((req,res,next)=>{
     next();
     
 })
+
+// app.use(flash());
+// app.use((req,res,next)=>{
+//     res.locals.success_msg=req.flash('success_msg')
+//     res.locals.error_msg=req.flash('error_msg')
+//     next();
+         
+// })
 //Ejs Setup 
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'));
