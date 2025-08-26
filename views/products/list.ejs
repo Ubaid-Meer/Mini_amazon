@@ -1,21 +1,34 @@
-<style>
-  .uploadbtn{
+<style> 
+  .uploadbtn {
     text-decoration: none;
     font-size: 16px;
-   
   }
-  .btn{
-     padding: 6px;
-     padding-bottom: 4px;
+  .btn {
+    padding: 6px;
+    padding-bottom: 4px;
     background-color: rgb(53, 207, 169);
     border-radius: 7px;
     font-weight: bold;
-    
+  }
+  .action-btn {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .edit-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  .delete-btn {
+    background-color: #f44336;
+    color: white;
   }
 </style>
+
 <%- include("../layouts/navbar") %>
 <%- include("../layouts/header") %>
-
 
 <h2>All Products</h2>
 
@@ -25,10 +38,13 @@
   <tr>
     <th>Product Name</th>
     <th>Price</th>
-    <th>Description </th>
+    <th>Description</th>
     <th>Category</th>
     <th>Stock</th>
     <th>Image</th>
+    <% if (user) { %>  <!-- Only show if logged in -->
+      <th>Actions</th>
+    <% } %>
   </tr>
 </thead>
 <tbody>
@@ -36,22 +52,31 @@
    <% products.forEach(p => { %>
     <tr>
       <td><%= p.name %></td>
-      <td><%=p.price  %> $</td>
+      <td><%= p.price %> $</td>
       <td><%= p.description %></td>
       <td><%= p.category %></td>
       <td><%= p.stock %></td>
-      <td> <img src="/imges/<%=p.image  %> "width="80" ></td>
-    </tr>
+      <td><img src="/imges/<%= p.image %>" width="80"></td>
 
+      <% if (user) { %>  
+        <td>
+          <a href="/products/edit/<%= p._id %>">
+            <button class="action-btn edit-btn">Edit</button>
+          </a>
+
+          <form action="/products/delete/<%= p._id %>" method="POST" style="display:inline;">
+            <button type="submit" class="action-btn delete-btn">Delete</button>
+          </form>
+        </td>
+      <% } %>
+    </tr>
    <% }) %>  
    <% } else { %>
     <tr>
-      <td colspan="6">No Product Data found</td>
+      <td colspan="7">No Product Data found</td>
     </tr>
   <% } %>
 </tbody>
-
 </table>
-
 
 <%- include("../layouts/footer") %>

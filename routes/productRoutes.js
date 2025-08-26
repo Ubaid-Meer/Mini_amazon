@@ -8,8 +8,8 @@ const isauth=require('../middleware/isauth');
 
 router.get('/all',async(req,res)=>{
     try{
-        const products =await Product.find();
-        res.render('products/list',{title:"All Product",products})
+        const products =await Product.find(); 
+        res.render('products/list',{products,user:req.session.user})
     }
     catch(err){
         console.error(err)
@@ -52,7 +52,7 @@ router.get('/edit/:id',isauth,async(req,res)=>{
     res.status(500).send("Server Error")
   }
 });
-router.post('/edit/:id',isauth,async(req,req)=>{
+router.post('/edit/:id',isauth,async(req,res)=>{
 
   try {
       const {name,price ,description}=req.body;
@@ -68,6 +68,17 @@ router.post('/edit/:id',isauth,async(req,req)=>{
     res.status(500).send('Server Error')
     
   }
+});
+
+router.post('/delete/:id',isauth,async(req,res)=>{
+  try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.redirect('/products/all')
+
+  } catch (error) {
+      console.error(error)
+      res.status(500).send('Server Error Please try Later')
+  }    
 })
 module.exports=router;
 
