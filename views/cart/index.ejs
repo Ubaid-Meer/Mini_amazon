@@ -1,0 +1,36 @@
+   <%- include("../layouts/navbar") %>
+    <%- include("../layouts/header") %>
+<h2>Your Cart</h2>
+
+<% if (cart && cart.items && cart.items.length > 0) { %>
+   <table>
+      <% cart.items.forEach(item => { %>
+         <tr>
+            <td><%= item.productId.name || item.productId %></td>
+            <td><%= item.quantity %></td>
+         </tr>
+      <% }) %>
+   </table>
+
+   <!-- Checkout Button -->
+   <form action="/orders/checkout" method="POST">
+      <button type="submit">Proceed to Checkout</button>
+   </form>
+<% } else { %>
+   <p>Your cart is empty.</p>
+<% } %>
+<h2>Payment</h2>
+
+<form action="/orders/checkout" method="post">
+    <label for="">Select Payment Method</label>
+    <select name="paymentMethod" id="">
+        <option value="COD">Cash On Delivery</option>
+        <option value="Stripe">Stripe(Card)</option>
+        <option value="Paypal">Paypal</option>
+    </select>
+    <button type="submit">Place Order</button>
+</form>
+
+
+
+

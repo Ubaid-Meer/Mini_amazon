@@ -1,8 +1,9 @@
-<style> 
+<style>
   .uploadbtn {
     text-decoration: none;
     font-size: 16px;
   }
+
   .btn {
     padding: 6px;
     padding-bottom: 4px;
@@ -10,6 +11,7 @@
     border-radius: 7px;
     font-weight: bold;
   }
+
   .action-btn {
     padding: 5px 10px;
     margin: 2px;
@@ -17,66 +19,124 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
   .edit-btn {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
   }
+
   .delete-btn {
     background-color: #f44336;
     color: white;
   }
 </style>
 
-<%- include("../layouts/navbar") %>
-<%- include("../layouts/header") %>
+<%- include("../layouts/navbar") %> <%- include("../layouts/header") %>
 
-<h2>All Products</h2>
+    <h2>All Products</h2>
+    <!-- search Product form -->
+    <form action="/products/all" method="get">
+      <input type="text" name="search" placeholder="Search Product by Name"
+        value="<%= typeof search !=='undefined'?search :'' %>">
+      <button type="submit">Search</button>
+      <select name="sort" onchange="this.form.submit()">
+        <option value="">Sort by</option>
+        <option value="price_asc" <%=sort==="price_asc" ? "selected" :"" %>>Price:Low -> High</option>
+        <option value="price_desc" <%=sort==="price_desc" ? 'selected' :'' %>>Price:High-> Low </option>
+        <option value="newest" <%=sort==="newest" ? 'selected' :'' %>>Newest</option>
+      </select>
+    </form>
 
-<button class="btn"><a href="/products/add" class="uploadbtn">+ Add New Product</a></button>
-<table border="1" cellpadding="10" align-item="center">
-<thead>
-  <tr>
-    <th>Product Name</th>
-    <th>Price</th>
-    <th>Description</th>
-    <th>Category</th>
-    <th>Stock</th>
-    <th>Image</th>
-    <% if (user) { %>  <!-- Only show if logged in -->
-      <th>Actions</th>
-    <% } %>
-  </tr>
-</thead>
-<tbody>
-  <% if (products.length > 0) { %>
-   <% products.forEach(p => { %>
-    <tr>
-      <td><%= p.name %></td>
-      <td><%= p.price %> $</td>
-      <td><%= p.description %></td>
-      <td><%= p.category %></td>
-      <td><%= p.stock %></td>
-      <td><img src="/imges/<%= p.image %>" width="80"></td>
+    <button class="btn">
+      <a href="/products/add" class="uploadbtn">+ Add New Product</a>
+    </button>
+    <table border="1" cellpadding="10" align-item="center">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Price</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Stock</th>
+          <th>Image</th>
+          <% if (user) { %>
+            <!-- Only show if logged in -->
+            <th>Actions</th>
+            <% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (products.length> 0) { %> <% products.forEach(p=> { %>
+            <tr>
+              <td>
+                <%= p.name %>
+              </td>
+              <td>
+                <%= p.price %> $
+              </td>
+              <td>
+                <%= p.description %>
+              </td>
+              <td>
+                <%= p.category %>
+              </td>
+              <td>
+                <%= p.stock %>
+              </td>
+              <td>
+                <% if (p.image) { %>
+                  <img src="/images/<%= p.image %>" width="80" />
+                  <% } else { %>
+                    No Image
+                    <% } %>
+              </td>
+              <td>
 
-      <% if (user) { %>  
-        <td>
-          <a href="/products/edit/<%= p._id %>">
-            <button class="action-btn edit-btn">Edit</button>
-          </a>
+                <form action="/cart/add/<%= p._id %>" method="post">
+                  <button type="submit">Add To Cart</button>
+                </form>
+              </td>
 
-          <form action="/products/delete/<%= p._id %>" method="POST" style="display:inline;">
-            <button type="submit" class="action-btn delete-btn">Delete</button>
-          </form>
-        </td>
-      <% } %>
-    </tr>
-   <% }) %>  
-   <% } else { %>
-    <tr>
-      <td colspan="7">No Product Data found</td>
-    </tr>
-  <% } %>
-</tbody>
-</table>
+              <% if (user) { %>
+                <td>
+                  <a href="/products/edit/<%= p._id %>">
+                    <button class="action-btn edit-btn">Edit</button>
+                  </a>
 
-<%- include("../layouts/footer") %>
+                  <form action="/products/delete/<%= p._id %>" method="POST" style="display: inline">
+                    <button type="submit" class="action-btn delete-btn">Delete</button>
+                  </form>
+                </td>
+                <% } %>
+            </tr>
+            <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7">No Product Data found</td>
+                </tr>
+                <% } %>
+      </tbody>
+
+
+    </table>
+
+    <div style="margin-top: 20px;">
+      <% if (totalPages> 1) { %>
+        <div>
+          <% if (currentPage> 1) { %>
+            <a href="/products/all?page=<%= currentPage - 1 %>">Back</a>
+            <% } %>
+              page: <%= currentPage %> of <%= totalPages %>
+
+                  <% if (currentPage < totalPages) { %>
+                    <a href="/products/all?page=<%= currentPage + 1 %>">Next</a>
+
+                    <% } %>
+        </div>
+
+        <% } %>
+    </div>
+
+
+
+    <%- include("../layouts/footer") %>

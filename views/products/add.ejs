@@ -1,6 +1,6 @@
 <!-- <%- include("../layouts/header") %>   -->
 <h2>Add New Product</h2>
-<form action="/products/add" method="POST">  
+<form action="/products/add" method="POST" enctype="multipart/form-data">  
   <label>Name:</label>
   <input type="text" name="name" required><br>
 
@@ -15,6 +15,9 @@
 
   <label>Stock:</label>
   <input type="number" name="stock" value="0"><br>
+
+  <label for="">Image</label>
+  <input type="file" name="image" accept="image/*">
 
   <button type="submit">Add Product</button>
 </form>
